@@ -7,17 +7,29 @@ from matplotlib.animation import FuncAnimation
 C = 7 * 10**-9
 rho = 1060
 A = np.pi * 0.0004**2
-dx = 0.001
-dt = 0.00384
-print(np.sqrt(A/rho/C))
+print(np.sqrt(A/rho/C)) # v = 0,26 m/s
+N = 500
+dx = 0.01/N
+
+dt = 0.001/0.26  /N
+
 
 # initiele condities
-P_start = [80, 80, 80, 100, 120, 100, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80]
-Q_start = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+P_start = []
+for i in np.arange(0, 0.01, 0.01/N):
+    p = 40 * np.exp(-(i**2 / 0.002**2)) + 80
+    P_start.append(p)
+
+
+Q_start = []
+for i in range(0, N):
+    Q_start.append(0)
+
+
 
 def bepaal_dqdx(Q_lijst):
     dqdx_lijst = []
-    for i, flow in enumerate(Q_lijst):  # Gebruik enumerate om de index te krijgen
+    for i, flow in enumerate(Q_lijst): 
     
         if i == 0:
             dqdx = (Q_lijst[i+1] - Q_lijst[i]) / dx
@@ -36,14 +48,12 @@ def bepaal_dqdx(Q_lijst):
 def bepaal_P(Q_lijst, P_lijst):
     dqdx_lijst = bepaal_dqdx(Q_lijst)
     P_lijst2 = []
-    dpdt_lijst = []
 
     for i in range (len(dqdx_lijst)):
         dpdt = dqdx_lijst[i]/-C
         P = P_lijst[i] + dpdt * dt
         P_lijst2.append(P)
-        dpdt_lijst.append(dpdt)
-    print(dpdt_lijst)
+
 
     
     return P_lijst2
@@ -52,7 +62,7 @@ def bepaal_P(Q_lijst, P_lijst):
 def bepaal_dpdx(Q_lijst, P_lijst):
     P_lijst2 = bepaal_P(Q_lijst, P_lijst)
     dpdx_lijst = []
-    for i, flow in enumerate(P_lijst2):  # Gebruik enumerate om de index te krijgen
+    for i, flow in enumerate(P_lijst2):  
     
         if i == 0:
             dpdx = (P_lijst2[i+1] - P_lijst2[i]) / dx
@@ -84,13 +94,20 @@ def bepaal_Q(Q_lijst, P_lijst):
 
 
 P = [P_start]
-plaats = [0, 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.010, 0.011, 0.012, 0.013, 0.014, 0.015, 0.016, 0.017]
-for t in range(0,18):
+plaats = []
+for i in range(0, N):
+    plaats.append(i * dx)
+
+for t in range(0,10*N):
     p = bepaal_P(Q_start, P_start)
     q = bepaal_Q(Q_start, P_start)
-    
-    plt.plot(plaats, P_start)
-    plt.show()
+
+    if t%100 == 0:
+        plt.plot(plaats, P_start)
+        plt.draw()
+        plt.pause(0.01)
+        plt.clf()
+
     P_start = p
     Q_start = q
     
