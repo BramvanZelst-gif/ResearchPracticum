@@ -51,21 +51,24 @@ def bepaal_P(Q_lijst, P_lijst, n):
     P_lijst2 = []
 
     for i in range (len(dqdx_lijst)):
-        if i == 1:
-            P = 40 * np.sin(2 * np.pi * n / 0.006) + 80
+        if i == 0:
+            P = 40 * np.sin(2 * np.pi * n * dt / 0.006) + 80
             P_lijst2.append(P)
+            if P < 80:
+                P_lijst2.append(80)
+            else:
+                P_lijst2.append(P)
+                
             
         else:
             dpdt = dqdx_lijst[i]/-C
             P = P_lijst[i] + dpdt * dt
             P_lijst2.append(P)
 
-
-    
     return P_lijst2
 
 
-def bepaal_dpdx(Q_lijst, P_lijst):
+def bepaal_dpdx(Q_lijst, P_lijst, n):
     P_lijst2 = bepaal_P(Q_lijst, P_lijst, n)
     dpdx_lijst = []
     for i, flow in enumerate(P_lijst2):  
@@ -84,13 +87,13 @@ def bepaal_dpdx(Q_lijst, P_lijst):
     return dpdx_lijst
 
 
-def bepaal_Q(Q_lijst, P_lijst):
-    dpdx_lijst = bepaal_dpdx(Q_lijst, P_lijst)
+def bepaal_Q(Q_lijst, P_lijst, n):
+    dpdx_lijst = bepaal_dpdx(Q_lijst, P_lijst, n)
     Q_lijst2 = []
 
     for i in range (len(dpdx_lijst)):
         dqdt = dpdx_lijst[i] *A / -rho
-        
+
         Q = Q_lijst[i] + dqdt * dt
         Q_lijst2.append(Q)
     
@@ -105,7 +108,7 @@ for i in range(0, N):
 n = 0
 for t in np.arange(0, 10*N):
     p = bepaal_P(Q_start, P_start, n)
-    q = bepaal_Q(Q_start, P_start)
+    q = bepaal_Q(Q_start, P_start, n)
     n = n + 0.001
 
     if t%100 == 0:

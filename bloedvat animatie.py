@@ -124,5 +124,11 @@ def animation(i):
 
 # animation = FuncAnimation(fig, animation, interval = 100)
 anim = ani.FuncAnimation(fig, animation, frames = range(total_frames), interval = interval)
-anim.save("test.mp4", fps = fps)
-plt.show()
+# anim.save("test.mp4", fps = fps)
+# plt.show()
+
+# writervideo = ani.FFMpegWriter(fps=fps) 
+# anim.save('increasingStraightLine.mp4', writer=writervideo) 
+# plt.close() 
+
+anim.save("test.gif")

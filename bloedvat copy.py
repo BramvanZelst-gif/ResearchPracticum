@@ -48,15 +48,10 @@ def bepaal_P(Q_lijst, P_lijst):
     dqdx_lijst = bepaal_dqdx(Q_lijst)
     P_lijst2 = []
 
-    for i in range (len(dqdx_lijst)):
-        if i == 1:
-            
-
-
-        else:    
-            dpdt = dqdx_lijst[i]/-C
-            P = P_lijst[i] + dpdt * dt
-            P_lijst2.append(P)
+    for i in range (len(dqdx_lijst)):  
+        dpdt = dqdx_lijst[i]/-C
+        P = P_lijst[i] + dpdt * dt
+        P_lijst2.append(P)
 
 
     
