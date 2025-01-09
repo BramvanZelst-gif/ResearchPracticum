@@ -98,8 +98,8 @@ plaats = []
 for i in range(0, N):
     plaats.append(i * dx)
 
-for t in range(0,10*N):
-    p = bepaal_P(Q_start, P_start)
+for t in range(0, 10*N):
+    p = bepaal_P(Q_start, P_start, t)
     q = bepaal_Q(Q_start, P_start)
 
     if t%100 == 0:
@@ -115,3 +115,6 @@ for t in range(0,10*N):
 
 plt.plot(plaats, P_start)
 plt.show()
+
+print(len(P_start))
+print(len(plaats))
