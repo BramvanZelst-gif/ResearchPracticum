@@ -52,6 +52,7 @@ def bepaal_P(Q_lijst, P_lijst, n):
 
     for i in range (len(dqdx_lijst)):
         if i == 1:
+            P = 40 * np.sin(2 * np.pi * n / 0.006) + 80
             P_lijst2.append(P)
             
         else:
@@ -68,7 +69,7 @@ def bepaal_dpdx(Q_lijst, P_lijst):
     P_lijst2 = bepaal_P(Q_lijst, P_lijst, n)
     dpdx_lijst = []
     for i, flow in enumerate(P_lijst2):  
-    
+
         if i == 0:
             dpdx = (P_lijst2[i+1] - P_lijst2[i]) / dx
 
@@ -121,3 +122,6 @@ for t in np.arange(0, 10*N):
 
 plt.plot(plaats, P_start)
 plt.show()
+
+print(len(P_start))
+print(len(plaats))
